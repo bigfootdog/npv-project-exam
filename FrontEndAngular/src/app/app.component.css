@@ -1,0 +1,44 @@
+.custom-form-adjust {
+    margin-bottom:4px
+}
+
+.npv {
+    color:#5cb85c; 
+    font-weight:bold;
+}
+
+.numeric-input {
+    width:150px; 
+    text-align:right;
+}
+
+.discount-input {
+    width:100px; 
+    text-align:right;
+}
+
+.row {
+    margin-bottom:4px;
+}
+
+.calculator-entry-box {
+    width:100%; 
+    text-align:right; 
+    border:1px solid #ccc!important; 
+    padding:12px; 
+    margin-bottom:20px
+}
+
+label {
+    margin-right: 5px;
+}
+
+input[type=radio] {
+    margin-right: 6px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}

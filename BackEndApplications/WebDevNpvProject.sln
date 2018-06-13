@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlowBusinessLogic", "CashFlowBusinessLogic\CashFlowBusinessLogic.csproj", "{388CE6F8-CB5A-4FFC-B492-B4042D383F40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlowUnitTest", "CashFlowUnitTest\CashFlowUnitTest.csproj", "{9C2F01D5-1CF9-488D-8C93-B3985184DCAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlowWebApi", "CashFlowWebApi\CashFlowWebApi.csproj", "{F552BCB7-2791-4AE5-A989-848D18FBFBDF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{388CE6F8-CB5A-4FFC-B492-B4042D383F40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{388CE6F8-CB5A-4FFC-B492-B4042D383F40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{388CE6F8-CB5A-4FFC-B492-B4042D383F40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{388CE6F8-CB5A-4FFC-B492-B4042D383F40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C2F01D5-1CF9-488D-8C93-B3985184DCAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C2F01D5-1CF9-488D-8C93-B3985184DCAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C2F01D5-1CF9-488D-8C93-B3985184DCAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C2F01D5-1CF9-488D-8C93-B3985184DCAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F552BCB7-2791-4AE5-A989-848D18FBFBDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F552BCB7-2791-4AE5-A989-848D18FBFBDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F552BCB7-2791-4AE5-A989-848D18FBFBDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F552BCB7-2791-4AE5-A989-848D18FBFBDF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
