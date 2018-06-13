@@ -12,12 +12,13 @@ export class AppComponent implements OnInit {
     title = `Net Present Value (NPV) Calculator`;
     cashFlowInput = new CashFlowInput();
     netPresentValue = 0;
-    cashFlows = Config.defaultCashflow;
-
+    cashFlows = this.cashFlowInput.CashFlow.map(i => ({'value' : i}));
+  
     constructor(private cashflowApi: CashflowApiService) {}
 
-    ngOnInit() { }
-
+    ngOnInit() {      
+    }
+   
     addCashFlow() {
         this.cashFlows.push({value: 0});
     }
@@ -26,19 +27,22 @@ export class AppComponent implements OnInit {
         this.cashFlows.splice(term, 1);        
     }
 
-    calculate() {
+    calculateCashFlow() {
         this.cashFlowInput.CashFlow = this.cashFlows.map(i => Number(i.value.toString().replace(",","")));
         this.cashflowApi.getNetPresentValue(this.cashFlowInput).then((x) => {
             this.netPresentValue = Number(x);
         });
     }
 
+    reset() {
+        this.cashFlowInput = new CashFlowInput();
+        this.cashFlows = this.cashFlowInput.CashFlow.map(i => ({'value' : i}));    
+    }
+
     formatNumber(model: any) {
         const _input =  eval('this.' + model);
         let _result = Number(_input.toString().replace(/,/g , '')).toFixed(2);
         eval(`this.${model} = Number(${_result}).toLocaleString()`);
-
-        this.calculate();
     }
 
     handleNumberKey(evt: any) {

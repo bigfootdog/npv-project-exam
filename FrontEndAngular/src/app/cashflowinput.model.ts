@@ -4,5 +4,9 @@ export class CashFlowInput {
     LowerBoundDiscountRate: number = 0;
     UpperBoundDiscountRate: number = 0;
     DiscountRateIncrement: number = 0; 
-    CashFlow : {};   
+    CashFlow : number[];
+
+    constructor() {
+        this.CashFlow = [0, 0, 0];        
+    }
 }
