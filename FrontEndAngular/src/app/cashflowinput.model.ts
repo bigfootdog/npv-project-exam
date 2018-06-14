@@ -10,3 +10,16 @@ export class CashFlowInput {
         this.CashFlow = [0, 0, 0];        
     }
 }
+
+
+export class CashFlowOutput {
+    NetPresentValue: number = 0; 
+    CashFlows : CashFlow[];
+ 
+}
+
+export class CashFlow {
+    Index: number = 0; 
+    Amount: number = 0; 
+    Discount: number = 0;
+ }

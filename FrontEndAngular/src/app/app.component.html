@@ -23,10 +23,11 @@
             </div>
             <div *ngFor="let item of cashFlows; let index = index;" >
                  <div class="row text-right">
-                    <div class="col-sm-3">&nbsp;</div>
-                    <div class="col-sm-3"><label class="input-group-addon">Cash Flow {{index + 1}}</label></div>
+                    <div class="col-sm-6"><label class="input-group-addon">Cash Flow {{index + 1}}</label></div>
                     <div class="col-sm-3"><input type="text" class="form-control  numeric-input"  [(ngModel)]="cashFlows[index].value" [name]="index + 1" (keypress)="handleNumberKey($event)" (focusout)="formatNumber('cashFlows[' + index + '].value')" /></div>
-                    <div class="col-sm-3"><input type="button" class="btn btn-danger btn-sm" value="Remove" (click)="removeCashFlow(index)" /></div>
+                    <div class="col-sm-1"><label class="cashflow-discount">{{cashFlows[index].discount}}%</label></div>
+                         <!--<div class="col-sm-2"><input type="text" class="form-control"  [(ngModel)]="cashFlows[index].discount"  /> </div>-->
+                    <div class="col-sm-2"><input type="button" class="btn btn-danger btn-sm" value="Remove" (click)="removeCashFlow(index)" /></div>
                 </div>
             </div>
             <div class="row">

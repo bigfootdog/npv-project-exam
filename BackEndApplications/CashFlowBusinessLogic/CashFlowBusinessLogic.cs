@@ -8,15 +8,17 @@ namespace CashFlowBusinessLogic
 {
     public interface ICashFlowCalculator
     {
-        double GetNetPresentValue(CashFlowInput entry);
+        CashFlowOutput GetNetPresentValue(CashFlowInput entry);
     }
    
     public class CashFlowCalculator : ICashFlowCalculator
     {
-        public double GetNetPresentValue(CashFlowInput entry)
+        public CashFlowOutput GetNetPresentValue(CashFlowInput entry)
         {
             double _netPresentValue = 0;
             double _cashFlowsFromInvestments = 0;
+            CashFlowOutput result = new CashFlowOutput();
+            List<CashFlow> cashflows = new List<CashFlow>();
 
             try
             {
@@ -28,11 +30,15 @@ namespace CashFlowBusinessLogic
                 {
                     double _discount = (term.index == 0) ? entry.LowerBoundDiscountRate  : (entry.LowerBoundDiscountRate + ((term.index) * entry.DiscountRateIncrement));
                     _discount = (_discount > entry.UpperBoundDiscountRate) ? entry.UpperBoundDiscountRate : _discount;
-                    var discountedAmount = term.amount * _discount;
-                    _cashFlowsFromInvestments += (double)Math.Round((decimal)discountedAmount, 2);
+                    var _netAmount = term.amount * _discount;
+                    _cashFlowsFromInvestments += (double)Math.Round((decimal)_netAmount, 2);
+
+                    cashflows.Add(new CashFlow() { index = term.index, Amount = term.amount, Net = _netAmount,  Discount = Math.Round(_discount *=100, 2) });
                 }
 
                 _netPresentValue = _cashFlowsFromInvestments - entry.InitialInvestment;
+                result.NetPresentValue = Math.Round(_netPresentValue, 2);
+                result.CashFlows = cashflows;
             }
             catch (Exception ex)
             {
@@ -40,7 +46,7 @@ namespace CashFlowBusinessLogic
                 Console.WriteLine(ex.InnerException.ToString());
             }
 
-            return Math.Round(_netPresentValue, 2);
+            return result;
         }
     }
 }

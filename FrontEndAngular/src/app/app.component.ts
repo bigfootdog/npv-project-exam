@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CashflowApiService } from './services/cashflow-api.service';
-import { CashFlowInput } from './cashflowinput.model';
+import { CashFlowInput, CashFlowOutput } from './cashflowinput.model';
 import Config from './config';
 
 @Component({
@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
     title = `Net Present Value (NPV) Calculator`;
     cashFlowInput = new CashFlowInput();
     netPresentValue = 0;
-    cashFlows = this.cashFlowInput.CashFlow.map(i => ({'value' : i}));
+    cashFlows = this.cashFlowInput.CashFlow.map(i => ({'value' : i, 'discount' : 0}));
   
     constructor(private cashflowApi: CashflowApiService) {}
 
@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
     }
    
     addCashFlow() {
-        this.cashFlows.push({value: 0});
+        this.cashFlows.push({value: 0, discount : 0});
     }
 
     removeCashFlow(term: any){
@@ -30,13 +30,18 @@ export class AppComponent implements OnInit {
     calculateCashFlow() {
         this.cashFlowInput.CashFlow = this.cashFlows.map(i => Number(i.value.toString().replace(",","")));
         this.cashflowApi.getNetPresentValue(this.cashFlowInput).then((x) => {
-            this.netPresentValue = Number(x);
+         var t = <CashFlowOutput> x; 
+          
+           this.netPresentValue = t.NetPresentValue;// Number(x);
+
+            this.cashFlows = t.CashFlows.map(i => ({'value' : i.Amount, 'discount' : i.Discount }));
+            console.log(x);
         });
     }
 
     reset() {
         this.cashFlowInput = new CashFlowInput();
-        this.cashFlows = this.cashFlowInput.CashFlow.map(i => ({'value' : i}));    
+        this.cashFlows = this.cashFlowInput.CashFlow.map(i => ({'value' : i, 'discount' : 0}));    
     }
 
     formatNumber(model: any) {

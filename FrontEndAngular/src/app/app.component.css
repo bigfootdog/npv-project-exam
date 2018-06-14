@@ -8,13 +8,17 @@
 }
 
 .numeric-input {
-    width:150px; 
+    width:120px; 
     text-align:right;
 }
 
 .discount-input {
     width:100px; 
     text-align:right;
+}
+
+.cashflow-discount {
+    margin-top: 6px;
 }
 
 .row {
