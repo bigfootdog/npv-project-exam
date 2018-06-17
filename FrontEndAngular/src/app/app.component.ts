@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
     }
 
     calculateCashFlow() {
-        if (!this._isValid) { return; }
+        if (!this._isValid()) { return; }
         this.cashFlowInput.CashFlow = this.cashFlows.map(i => Number(i.value.toString().replace(',','')));
         this.cashflowApi.getNetPresentValue(this.cashFlowInput).then((x) => {
             this.cashFlowOutput = <CashFlowOutput> x;
@@ -90,10 +90,10 @@ export class AppComponent implements OnInit {
         if (this.cashFlowInput.LowerBoundDiscountRate > 100 || 
                 this.cashFlowInput.UpperBoundDiscountRate > 100 ||
                 this.cashFlowInput.DiscountRateIncrement > 100) {
-                    return false;
-                } else {
-                    return true;
-                }
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }
