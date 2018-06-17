@@ -3,23 +3,25 @@ export class CashFlowInput {
     DiscountRate: number = 0;
     LowerBoundDiscountRate: number = 0;
     UpperBoundDiscountRate: number = 0;
-    DiscountRateIncrement: number = 0; 
-    CashFlow : number[];
+    DiscountRateIncrement: number = 0;
+    CashFlow = [];
 
     constructor() {
         this.CashFlow = [0, 0, 0];        
     }
 }
 
-
 export class CashFlowOutput {
     NetPresentValue: number = 0; 
     CashFlows : CashFlow[];
- 
+
+    constructor() {
+        this.CashFlows = [{Index :0, Amount: 0, Discount: 0}];        
+    } 
 }
 
 export class CashFlow {
     Index: number = 0; 
     Amount: number = 0; 
     Discount: number = 0;
- }
+}

@@ -1,59 +1,54 @@
-<div class="container">2
+<div class="container">
     <div class="row">
-        <div class="col-sm-3"></div>
         <div class="col-sm-6">
             <h5>{{title}}</h5>
-            <div class="calculator-entry-box">
-                <div class="row">
-                    <div class="col-sm-6"><label>Initial Investment </label></div>
-                    <div class="col-sm-6"><input type="text" class="form-control numeric-input" [(ngModel)]="cashFlowInput.InitialInvestment" name="InitialInvestment" (keypress)="handleNumberKey($event)" (focusout)="formatNumber('cashFlowInput.InitialInvestment')" /></div>
+            <form (ngSubmit)="calculateCashFlow()" #tenantForm="ngForm" validate>
+                <div class="calculator-entry-box">
+                    <div class="row">
+                        <div class="col-sm-6"><label>Initial Investment </label></div>
+                        <div class="col-sm-6"><input type="text" class="form-control numeric-input" [(ngModel)]="cashFlowInput.InitialInvestment" name="InitialInvestment" (keypress)="handleNumberKey($event)" (focusout)="formatNumber('cashFlowInput.InitialInvestment')" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6"><label>Lower Bound Discount Rate % </label></div>
+                        <div class="col-sm-6"><input type="number" class="form-control discount-input" min="1" max="5" [(ngModel)]="cashFlowInput.LowerBoundDiscountRate" name="LowerBoundDiscountRate" (keypress)="handleNumberKey($event)" ngControl="name" #name="ngModel" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6"><label>Upper Bound Discount Rate % </label></div>
+                        <div class="col-sm-6"><input type="number" class="form-control discount-input" [(ngModel)]="cashFlowInput.UpperBoundDiscountRate" name="UpperBoundDiscountRate" (keypress)="handleNumberKey($event)" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6"><label>Discount Rate Increment % </label></div>
+                        <div class="col-sm-6"><input type="number" class="form-control discount-input" [(ngModel)]="cashFlowInput.DiscountRateIncrement" name="DiscountRateIncrement" (keypress)="handleNumberKey($event)" /></div>
+                    </div>          
+                </div>
+                <div *ngFor="let item of cashFlows; let index = index;" >
+                    <div class="row text-right">
+                        <div class="col-sm-6"><label class="input-group-addon">Cash Flow {{index + 1}}</label></div>
+                        <div class="col-sm-3"><input type="text" class="form-control  numeric-input"  [(ngModel)]="cashFlows[index].value" [name]="index + 1" (keypress)="handleNumberKey($event)" (focusout)="formatNumber('cashFlows[' + index + '].value')" /></div>
+                        <div class="col-sm-1"><label class="cashflow-discount">{{cashFlows[index].discount}}%</label></div>
+                        <div class="col-sm-2"><input type="button" class="btn btn-danger btn-sm" value="Remove" (click)="removeCashFlow(index)" /></div>
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6"><label>Lower Bound Discount Rate % </label></div>
-                    <div class="col-sm-6"><input type="number" class="form-control discount-input" min="1" max="5" [(ngModel)]="cashFlowInput.LowerBoundDiscountRate" name="LowerBoundDiscountRate" (keypress)="handleNumberKey($event)" /></div>
+                    <div class="col-sm-6 text-left"><input type="button" class="btn btn-primary" value="Add New Cash Flow" (click)="addCashFlow()" /></div>
+                    <div class="col-sm-6 text-right"><input type="submit" class="btn btn-primary" value="Calculate" (click)="calculateCashFlow()" />
+                        <input type="button" class="btn btn-basic" value="Reset" (click)="reset()" /></div>                
                 </div>
-                <div class="row">
-                    <div class="col-sm-6"><label>Upper Bound Discount Rate % </label></div>
-                    <div class="col-sm-6"><input type="number" class="form-control discount-input" [(ngModel)]="cashFlowInput.UpperBoundDiscountRate" name="UpperBoundDiscountRate" (keypress)="handleNumberKey($event)" /></div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6"><label>Discount Rate Increment % </label></div>
-                    <div class="col-sm-6"><input type="number" class="form-control discount-input" [(ngModel)]="cashFlowInput.DiscountRateIncrement" name="DiscountRateIncrement" (keypress)="handleNumberKey($event)" /></div>
-                </div>          
-            </div>
-            <div *ngFor="let item of cashFlows; let index = index;" >
-                 <div class="row text-right">
-                    <div class="col-sm-6"><label class="input-group-addon">Cash Flow {{index + 1}}</label></div>
-                    <div class="col-sm-3"><input type="text" class="form-control  numeric-input"  [(ngModel)]="cashFlows[index].value" [name]="index + 1" (keypress)="handleNumberKey($event)" (focusout)="formatNumber('cashFlows[' + index + '].value')" /></div>
-                    <div class="col-sm-1"><label class="cashflow-discount">{{cashFlows[index].discount}}%</label></div>
-                         <!--<div class="col-sm-2"><input type="text" class="form-control"  [(ngModel)]="cashFlows[index].discount"  /> </div>-->
-                    <div class="col-sm-2"><input type="button" class="btn btn-danger btn-sm" value="Remove" (click)="removeCashFlow(index)" /></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6 text-left"><input type="button" class="btn btn-primary" value="Add New Cash Flow" (click)="addCashFlow()" /></div>
-                <div class="col-sm-6 text-right"><input type="button" class="btn btn-primary" value="Calculate" (click)="calculateCashFlow()" />
-                    <input type="button" class="btn btn-basic" value="Reset" (click)="reset()" /></div>                
-            </div>            
+            </form>
             <hr />            
-            Net Present Value <label class="npv">{{netPresentValue.toLocaleString()}} </label>
+            Net Present Value <label class="npv">{{this.cashFlowOutput.NetPresentValue.toLocaleString()}} </label>
 
             <p><i>
                 Note: If error occurs because of the endpoint, please change the config in config.ts.
                 </i>
             </p>
         </div>
-        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <highcharts-chart 
+            [Highcharts]="highcharts"
+            [options]="optFromInput"
+            [(update)]="updateFromInput"
+            [oneToOne]=true style="width: 100%; height: 350px; display: block;"></highcharts-chart>
+        </div>
     </div> 
 </div>
-
-<highcharts-chart 
-      [Highcharts]="Highcharts"
-      [options]="optFromInput"
-      [(update)]="updateFromInput"
-      [oneToOne]=true
-
-      style="width: 100%; height: 350px; display: block;"
-    ></highcharts-chart>
-
-    
