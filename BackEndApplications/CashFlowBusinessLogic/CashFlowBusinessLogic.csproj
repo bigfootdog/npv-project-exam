@@ -43,6 +43,7 @@
     <Compile Include="CashFlowBusinessLogic.cs" />
     <Compile Include="CashFlowInput.cs" />
     <Compile Include="CashFlowOutput.cs" />
+    <Compile Include="Helper\ExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

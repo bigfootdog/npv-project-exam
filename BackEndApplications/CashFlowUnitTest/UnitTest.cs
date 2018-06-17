@@ -31,7 +31,7 @@ namespace CashFlowUnitTest
             CashFlowClient client = container.Resolve<CashFlowClient>();
             var result = client.GetNetPresentValue(_input);
 
-            Assert.AreEqual(result, -99962.5);
+            Assert.AreEqual(result.NetPresentValue, -99962.5);
         }
 
 
@@ -55,7 +55,7 @@ namespace CashFlowUnitTest
             CashFlowClient client = container.Resolve<CashFlowClient>();
             var result = client.GetNetPresentValue(_input);
 
-            Assert.AreEqual(result, -95875);
+            Assert.AreEqual(result.NetPresentValue, -95875);
         }
     }
 }
