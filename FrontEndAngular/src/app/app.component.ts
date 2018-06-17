@@ -3,6 +3,9 @@ import { CashflowApiService } from './services/cashflow-api.service';
 import { CashFlowInput, CashFlowOutput } from './cashflowinput.model';
 import Config from './config';
 
+import * as Highcharts from 'highcharts/highstock';
+import * as HC_exporting from 'highcharts/modules/exporting';
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -14,9 +17,52 @@ export class AppComponent implements OnInit {
     netPresentValue = 0;
     cashFlows = this.cashFlowInput.CashFlow.map(i => ({'value' : i, 'discount' : 0}));
   
+    Highcharts = Highcharts;
+
+    // Demo #1
+    // optFromInputString = `
+    // {
+    //   "subtitle": { "text": "Highcharts chart" },
+    //   "series": [{
+    //     "type": "line",
+    //     "data": [11,2,3]
+    //   }, {
+    //     "data": [5,6,7]
+    //   }]
+    // }
+    // `;
+
+//     optFromInput1 =  {
+//       "subtitle": { "text": "Highcharts chart" },
+//       "series": [{
+//         "type": "line",
+//         "data": [11,2,3]
+//       }, {
+//         "data": [5,6,7]
+//       }]
+//     }
+// ;
+
+  optFromInput = {};//JSON.parse(this.optFromInputString);
+  updateFromInput = false;
+
+  updateInputChart = ()=> {
+  //    var t = this.cashflowinput.
+    this.optFromInput = {
+        "subtitle": { "text": "Highcharts chart" },
+        "series": [{
+          "type": "line",
+          "data": this.cashFlows.map(i => Number(i.value))
+        }]
+      }
+    console.log(this.cashFlows.map(i => Number(i.value)));
+    //= JSON.parse(this.optFromInputString);
+  };
+
     constructor(private cashflowApi: CashflowApiService) {}
 
-    ngOnInit() {      
+    ngOnInit() {
+        this.updateInputChart();
     }
    
     addCashFlow() {
@@ -28,6 +74,8 @@ export class AppComponent implements OnInit {
     }
 
     calculateCashFlow() {
+        this.updateInputChart();
+        return;
         this.cashFlowInput.CashFlow = this.cashFlows.map(i => Number(i.value.toString().replace(",","")));
         this.cashflowApi.getNetPresentValue(this.cashFlowInput).then((x) => {
          var t = <CashFlowOutput> x; 

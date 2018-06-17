@@ -5,10 +5,11 @@ import { HttpModule } from '@angular/http'; //using httpclient
 
 import { AppComponent } from './app.component';
 import { CashflowApiService } from './services/cashflow-api.service';
+import { HighchartsChartComponent } from './highcharts-chart.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent, HighchartsChartComponent
   ],
   imports: [
     BrowserModule, FormsModule, HttpModule
