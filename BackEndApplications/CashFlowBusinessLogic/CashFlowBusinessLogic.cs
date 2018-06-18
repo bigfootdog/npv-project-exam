@@ -9,31 +9,35 @@ namespace CashFlowBusinessLogic
 {
     public interface ICashFlowCalculator
     {
-        CashFlowOutput GetNetPresentValue(CashFlowInput entry);
+        List<CashFlowOutput> GetMultipleNetPresentValues(CashFlowInput entry);
+        double GetNetPresentValue(double discount, List<double> cashflow);
     }
-   
+
     public class CashFlowCalculator : ICashFlowCalculator
     {
-        public CashFlowOutput GetNetPresentValue(CashFlowInput entry)
+        public List<CashFlowOutput> GetMultipleNetPresentValues(CashFlowInput entry)
         {
-            double _cashFlowsFromInvestments = 0;
-            CashFlowOutput _response = new CashFlowOutput();
-            List<CashFlow> _cashflows = new List<CashFlow>();
+            List<CashFlowOutput> result = new List<CashFlowOutput>();
 
             try
             {
-                foreach (var term in entry.CashFlow.Select((amount, index) => new { index, amount }))
-                {
-                    double _discount = (term.index == 0) ? entry.LowerBoundDiscountRate.ToPercentage() : (entry.LowerBoundDiscountRate.ToPercentage() + ((term.index) * entry.DiscountRateIncrement.ToPercentage()));
-                    _discount = (_discount > entry.UpperBoundDiscountRate.ToPercentage()) ? entry.UpperBoundDiscountRate.ToPercentage() : _discount;
-                    var _netAmount = term.amount * _discount;
-                    _cashFlowsFromInvestments += (double)Math.Round((decimal)_netAmount, 2);
+                double discount = entry.LowerBoundDiscountRate;
 
-                    _cashflows.Add(new CashFlow() { index = term.index, Amount = term.amount, Net = _netAmount,  Discount = Math.Round(_discount *=100, 2) });
+                while (discount < (entry.UpperBoundDiscountRate + entry.DiscountRateIncrement))
+                {
+                    double netPresentValueByRate = 0;
+
+                    netPresentValueByRate = this.GetNetPresentValue(discount, entry.CashFlow);
+
+                    result.Add(new CashFlowOutput()
+                    {
+                        NetPresentValue = Math.Round(netPresentValueByRate - entry.InitialInvestment, 2),
+                        Discount = Math.Round(discount, 2)
+                    });
+
+                    discount += entry.DiscountRateIncrement;
                 }
 
-                _response.NetPresentValue = Math.Round(_cashFlowsFromInvestments - entry.InitialInvestment, 2);
-                _response.CashFlows = _cashflows;
             }
             catch (Exception ex)
             {
@@ -41,8 +45,29 @@ namespace CashFlowBusinessLogic
                 Console.WriteLine(ex.InnerException.ToString());
             }
 
-            return _response;
+            return result;
         }
 
-    }    
+        public double GetNetPresentValue(double discount, List<double> cashflow)
+        {
+            double netPresentValue = 0;
+
+            try
+            {
+                foreach (var term in cashflow.Select((amount, index) => new { index, amount }))
+                {
+                    var discountedAmount = term.amount / Math.Pow(1 + (discount.ToPercentage()), term.index + 1);
+                    netPresentValue += (double)(decimal)discountedAmount;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //TODOs: Add logging error
+                Console.WriteLine(ex.InnerException.ToString());
+            }
+
+            return Math.Round(netPresentValue, 2);
+        }
+    }
 }

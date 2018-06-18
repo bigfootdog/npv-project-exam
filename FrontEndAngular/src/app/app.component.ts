@@ -13,7 +13,7 @@ import Config from './config';
 export class AppComponent implements OnInit {
     title = `Net Present Value (NPV) Calculator`;
     cashFlowInput = new CashFlowInput();
-    cashFlowOutput = new CashFlowOutput();
+    cashFlowOutput = [];
     cashFlows = this.cashFlowInput.CashFlow.map(i => ({'value' : i, 'discount' : 0}));
     highcharts = Highcharts;
     optFromInput = {};
@@ -36,8 +36,7 @@ export class AppComponent implements OnInit {
         if (!this._isValid()) { return; }
         this.cashFlowInput.CashFlow = this.cashFlows.map(i => Number(i.value.toString().replace(',','')));
         this.cashflowApi.getNetPresentValue(this.cashFlowInput).then((x) => {
-            this.cashFlowOutput = <CashFlowOutput> x;
-            this.cashFlows = this.cashFlowOutput.CashFlows.map(i => ({'value' : i.Amount, 'discount' : i.Discount }));
+            this.cashFlowOutput = Object.assign([],x);
             this.updateInputChart();
         });
     }
@@ -74,14 +73,9 @@ export class AppComponent implements OnInit {
                 'text': 'Cashflow Pattern'
             },
             series: [{
-            type: 'line',
-            name: 'Discount %',
-            data: this.cashFlowOutput.CashFlows.map(i => (i.Discount))
-            },
-            {
-            type: 'line',
-            name: 'Cashflow amount',
-            data: this.cashFlowOutput.CashFlows.map(i => (i.Amount))
+                type: 'line',
+                name: 'Net Present Value',
+                data: this.cashFlowOutput.map(i => (i.NetPresentValue))
             }]
             }
     };

@@ -19,9 +19,9 @@ namespace CashFlowWebApi.Controllers
 
         [Route("api/cashflow/getnpv")]
         [HttpPost]
-        public CashFlowOutput Post(CashFlowInput entry)
+        public List<CashFlowOutput> Post(CashFlowInput entry)
         {
-            return this._cashFlowCalculator.GetNetPresentValue(entry);
+            return this._cashFlowCalculator.GetMultipleNetPresentValues(entry);
         }
     }
 }

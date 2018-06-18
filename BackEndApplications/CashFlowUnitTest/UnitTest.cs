@@ -17,23 +17,14 @@ namespace CashFlowUnitTest
             IUnityContainer container = new UnityContainer();
             container.RegisterType<ICashFlowCalculator, CashFlowCalculator>();
 
-            double[] _terms = { 1000, 1000, 1000 };
+            double[] cashFlow = { 50000, 25000 };
+            double intital = 150000;
 
-            CashFlowInput _input = new CashFlowInput()
-            {
-                InitialInvestment = 100000,
-                LowerBoundDiscountRate = 1,
-                UpperBoundDiscountRate = 15,
-                DiscountRateIncrement = .25,
-                CashFlow = _terms.ToList()
-            };
-            
             CashFlowClient client = container.Resolve<CashFlowClient>();
-            var result = client.GetNetPresentValue(_input);
+            var result = client.GetNetPresentValue(1.2, cashFlow.ToList()) - intital;
 
-            Assert.AreEqual(result.NetPresentValue, -99962.5);
+            Assert.AreEqual(Math.Round(result, 2), -76182.26);
         }
-
 
         [TestMethod]
         public void Test_CustomCashFlowService_Case2()
@@ -41,21 +32,28 @@ namespace CashFlowUnitTest
             IUnityContainer container = new UnityContainer();
             container.RegisterType<ICashFlowCalculator, CashFlowCalculator>();
 
-            double[] _terms = { 110000, 110000, 110000 };
-
-            CashFlowInput _input = new CashFlowInput()
-            {
-                InitialInvestment = 100000,
-                LowerBoundDiscountRate = 1,
-                UpperBoundDiscountRate = 15,
-                DiscountRateIncrement = .25,
-                CashFlow = _terms.ToList()
-            };
+            double[] cashFlow = { 50000, 25000 };
+            double intital = 150000;
 
             CashFlowClient client = container.Resolve<CashFlowClient>();
-            var result = client.GetNetPresentValue(_input);
+            var result = client.GetNetPresentValue(1.3, cashFlow.ToList()) - intital;
 
-            Assert.AreEqual(result.NetPresentValue, -95875);
+            Assert.AreEqual(Math.Round(result, 2), -76279.20);
+        }
+
+        [TestMethod]
+        public void Test_CustomCashFlowService_Case3()
+        {
+            IUnityContainer container = new UnityContainer();
+            container.RegisterType<ICashFlowCalculator, CashFlowCalculator>();
+
+            double[] cashFlow = { 50000, 25000 };
+            double intital = 150000;
+
+            CashFlowClient client = container.Resolve<CashFlowClient>();
+            var result = client.GetNetPresentValue(1.4, cashFlow.ToList()) - intital;
+
+            Assert.AreEqual(Math.Round(result, 2), -76375.90);
         }
     }
 }

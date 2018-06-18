@@ -14,9 +14,15 @@ namespace CashFlowUnitTest
         {
             this._service = service;
         }
-        public CashFlowOutput GetNetPresentValue(CashFlowInput param)
+
+        public List<CashFlowOutput> GetMultipleNetPresentValues(CashFlowInput entry)
         {
-            return this._service.GetNetPresentValue(param);
+            return this._service.GetMultipleNetPresentValues(entry);
+        }
+
+        public double GetNetPresentValue(double discount, List<double> cashFlow)
+        {
+            return this._service.GetNetPresentValue(discount, cashFlow);
         }
     }
 }

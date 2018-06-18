@@ -12,12 +12,8 @@ export class CashFlowInput {
 }
 
 export class CashFlowOutput {
-    NetPresentValue: number = 0; 
-    CashFlows : CashFlow[];
-
-    constructor() {
-        this.CashFlows = [{Index :0, Amount: 0, Discount: 0}];        
-    } 
+    NetPresentValue: number = 0;
+    Discount: number = 0;
 }
 
 export class CashFlow {
